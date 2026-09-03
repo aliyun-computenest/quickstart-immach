@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="计算巢是阿里云开放给企业应用服务商的服务管理平台。服务商能够在计算巢上发布私有化部署服务，为其客户提供云上软件一键部署的能力；同时也支持全托管模式的服务，赋能服务商托管其客户资源。">
+  <title>Immich社区版 部署文档 - Aliyun 计算巢 x Demo</title>
+
+  <link rel="shortcut icon" href="img/favicon.ico">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  
+
+  
+
+  
+  
+
+  
+    <script src="search/main.js"></script>
+  
+
+  
+
+  <script src="js/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="nav">
+      <div class="nav-inner">
+        <div class="logo">
+          <img src="./img/logo-2x.png">
+        </div>
+        <div class="nav-list">
+          <ul>
+          
+              <li><a href="#immich">Immich社区版 部署文档</a></li>
+              
+                  <li><a href="#_1">概述</a></li>
+                  
+              
+                  <li><a href="#_2">部署流程</a></li>
+                  
+                      <li class="li-h3"><a href="#1">1. 创建服务实例</a></li>
+                  
+                      <li class="li-h3"><a href="#2">2. 确认订单并创建</a></li>
+                  
+                      <li class="li-h3"><a href="#3">3. 等待部署完成</a></li>
+                  
+                      <li class="li-h3"><a href="#4">4. 访问服务</a></li>
+                  
+                      <li class="li-h3"><a href="#5">5. 注册首个账号</a></li>
+                  
+              
+                  <li><a href="#_3">使用说明</a></li>
+                  
+              
+                  <li><a href="#_4">官方文档</a></li>
+                  
+              
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="content theme-github">
+      
+      <div class="content-inner">        
+        
+        <h1 id="immich">Immich社区版 部署文档</h1>
+<h2 id="_1">概述</h2>
+<p>Immich社区版 是一款开源自托管的照片和视频备份管理平台，支持手机端自动备份、时间轴浏览、相册共享，并内置机器学习模型实现自然语言语义检索与 OCR 文字识别，帮助用户完全掌控自己的影像数据。通过阿里云计算巢服务，您可以快速部署 Immich社区版，实现开箱即用。</p>
+<p>本服务基于 Immich v3.1.0，随实例编排 Immich 服务端、机器学习服务、官方定制 PostgreSQL 14（内置 VectorChord 向量扩展）与 Valkey 9 缓存，统一通过 2283 端口提供 Web 与 API 访问。</p>
+<h2 id="_2">部署流程</h2>
+<h3 id="1">1. 创建服务实例</h3>
+<p>访问 Immich社区版 服务部署链接，按提示填写部署参数：</p>
+<p><a href="https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&amp;ServiceId=service-a1edcc73f59743d58474">部署链接</a></p>
+<p><img alt="创建服务实例" src="images/create-instance.png" /></p>
+<p>需要您填写的参数只有两项：<strong>实例类型</strong>与<strong>实例密码</strong>。机器学习容器内存占用较高，实例类型建议选择 4 核 8G 及以上规格（例如 <code>ecs.u1-c1m2.xlarge</code>）。数据库口令由系统自动生成，无需填写。</p>
+<h3 id="2">2. 确认订单并创建</h3>
+<p>参数填写完成后可以看到对应询价明细，确认参数后点击 <strong>下一步：确认订单</strong>。确认订单完成后同意服务协议并点击 <strong>立即创建</strong> 进入部署阶段。</p>
+<h3 id="3">3. 等待部署完成</h3>
+<p>等待部署完成后进入服务实例管理，在控制台找到 Immich社区版 访问链接。</p>
+<p><img alt="服务实例详情" src="images/instance-detail.png" /></p>
+<p><strong>立即使用</strong>区域的 <code>immich_2283_url</code> 即为服务访问地址。</p>
+<h3 id="4">4. 访问服务</h3>
+<p>单击链接访问服务。</p>
+<p><img alt="服务页面" src="images/service-page.png" /></p>
+<h3 id="5">5. 注册首个账号</h3>
+<p>Immich 未预置任何账号。首次打开访问地址后点击 <strong>入门</strong>，注册的第一个账号会自动成为管理员；注册完成后登录即可上传与管理照片和视频。</p>
+<p><img alt="管理员注册" src="images/admin-register.png" /></p>
+<h2 id="_3">使用说明</h2>
+<ul>
+<li><strong>数据存储位置</strong>：照片视频存放于实例目录 <code>/opt/immich/library</code>，数据库文件存放于 <code>/opt/immich/postgres</code>，均位于 ECS 系统盘。释放实例会同时删除这些数据，请提前备份。</li>
+<li><strong>机器学习模型缓存</strong>：智能搜索、人脸识别与 OCR 所需模型已在镜像中预置于 <code>/opt/immich/model-cache</code>，可减少首次使用相关功能时的模型下载等待。</li>
+<li><strong>版本说明</strong>：版本已锁定为具体 release tag（v3.1.0），未使用 <code>latest</code>。Immich 官方处于快速迭代阶段，升级前请先阅读官方的破坏性变更说明。</li>
+<li><strong>安全建议</strong>：服务通过公网 IP 的 2283 端口直接访问，且首个访问者即可注册为管理员。建议部署后尽快完成管理员注册，并将安全组 2283 端口的来源地址收敛为可信网段。</li>
+</ul>
+<h2 id="_4">官方文档</h2>
+<p>更多信息请访问官方文档：<a href="https://docs.immich.app/">Quick start | Immich</a></p>
+        
+      </div>
+
+      <div class="copyrights">© 2009-2022 Aliyun.com 版权所有</div>
+    </div>
+  </div>
+  
+  <!--
+  MkDocs version      : 1.6.1
+  Docs Build Date UTC : 2026-09-03 09:57:10.179702+00:00
+  -->
+</body>
+</html>
